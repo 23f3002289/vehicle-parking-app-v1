@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}Available Spots{% endblock %}
+
+{% block content %}
+<h2 class="mb-4 text-primary">Available Spots</h2>
+
+<div class="card p-3 mb-4 shadow-sm">
+    <h5 class="mb-2">Lot: {{ lot.name }}</h5>
+    <p class="mb-1"><strong>Address:</strong> {{ lot.location }}</p>
+    <p class="mb-1"><strong>Pincode:</strong> {{ lot.pincode }}</p>
+    <p class="mb-1"><strong>Price/hour:</strong> ₹{{ lot.price }}</p>
+</div>
+
+{% if spots %}
+    <table class="table table-bordered table-striped">
+        <thead class="table-light">
+            <tr>
+                <th>Spot Number</th>
+                <th>Status</th>
+                <th>Reserve</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for spot in spots %}
+            <tr>
+                <td>{{ spot.spot_number }}</td>
+                <td><span class="badge bg-success">Available</span></td>
+                <td>
+                    <form action="/user/reserve/{{ spot.id }}" method="post">
+                        <button class="btn btn-sm btn-primary">Reserve</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <div class="alert alert-warning">No available spots in this lot.</div>
+{% endif %}
+<a href="/user/lots" class="btn btn-secondary mt-3">← Back to Lots</a>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}User Dashboard{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">Welcome, {{ user.name }}</h2>
+
+
+<div class="mb-4">
+  <a href="/user/lots" class="btn btn-primary me-2">Book a Spot</a>
+  <a href="/user/reservations" class="btn btn-success me-2">My Reservations</a>
+  
+</div>
+
+<h4 class="mb-3">Available Parking Lots</h4>
+
+{% if lots %}
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+  {% for lot in lots %}
+  <div class="col">
+    <div class="card shadow-sm h-100">
+      <div class="card-body">
+        <h5 class="card-title">{{ lot.name }}</h5>
+        <p><strong>Location:</strong> {{ lot.location }}</p>
+        <p><strong>Address:</strong> {{ lot.address }}</p>
+        <p><strong>Pincode:</strong> {{ lot.pincode }}</p>
+        <p><strong>Price per Hour:</strong> ₹{{ lot.price }}</p>
+        <p><strong>Total Spots:</strong> {{ lot.max_spots }}</p>
+        <p><strong>Available Spots:</strong> 
+          {{ lot.spots | selectattr('status', 'equalto', 'A') | list | length }}
+        </p>
+        <a href="/user/spots/{{ lot.id }}" class="btn btn-outline-primary btn-sm">View Spots</a>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+  <p>No parking lots available.</p>
+{% endif %}
+{% endblock %}

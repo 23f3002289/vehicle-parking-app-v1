@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block title %}My Reservations{% endblock %}
+
+{% block content %}
+<h2 class="mb-4 text-primary">My Reservations</h2>
+
+{% if reservations %}
+<table class="table table-bordered table-striped">
+    <thead class="table-light">
+        <tr>
+            <th>ID</th>
+            <th>Spot</th>
+            <th>Location</th>
+            <th>Start</th>
+            <th>End</th>
+            <th>Cost</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for r in reservations %}
+        <tr>
+            <td>{{ r.reservation_id }}</td>
+            <td>{{ r.spot_number }}</td>
+            <td>{{ r.lot_name }}</td>
+            <td>
+                {% if r.start_time %}
+                    {{ r.start_time.strftime('%d %b %Y, %I:%M %p') }}
+                {% else %}
+                    ---
+                {% endif %}
+            </td>
+            <td>
+                {% if r.end_time %}
+                    {{ r.end_time.strftime('%d %b %Y, %I:%M %p') }}
+                {% else %}
+                    ---
+                {% endif %}
+            </td>
+            <td>
+                {% if r.cost %}
+                    ₹{{ r.cost }}
+                {% else %}
+                    ---
+                {% endif %}
+            </td>
+            <td>
+                {% if r.end_time %}
+                    <span class="badge bg-success">Completed</span>
+                {% else %}
+                    <span class="badge bg-warning text-dark">Ongoing</span>
+                {% endif %}
+            </td>
+            <td>
+                {% if not r.end_time %}
+                <form action="/user/complete/{{ r.reservation_id }}" method="post">
+                    <button class="btn btn-sm btn-success">Complete</button>
+                </form>
+                {% else %}
+                <button class="btn btn-sm btn-secondary" disabled>Done</button>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<div class="alert alert-info">No reservations found.</div>
+{% endif %}
+
+<a href="/user/dashboard" class="btn btn-secondary mt-3">← Back to Dashboard</a>
+{% endblock %}

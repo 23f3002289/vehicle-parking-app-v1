@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Parking App{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+        <a class="navbar-brand" href="/">ParkingApp</a>
+
+        {% if session.get('user_type') == 'user' %}
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="/user/dashboard">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/user/lots">Book Spot</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/user/reservations">My Reservations</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>
+                </ul>
+            </div>
+
+        {% elif session.get('user_type') == 'admin' %}
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="/admin/dashboard">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/admin/create-lot">Create Lot</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/admin/view-lots">View Lots</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/admin/view-users">Users</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>
+                </ul>
+            </div>
+        {% endif %}
+    </div>
+</nav>
+
+<div class="container mt-4">
+    {% block content %}{% endblock %}
+</div>
+
+</body>
+</html>
